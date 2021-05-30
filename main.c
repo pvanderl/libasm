@@ -47,7 +47,7 @@ int		main(void)
 	char	*tmp;
 	char	*a;
 	char	*b;
-// 	char	*tmp2;
+ 	char	*tmp2;
 
 	r = 0;
 	i = 0;
@@ -148,8 +148,8 @@ int		main(void)
 	DUP("totobar")
 	DUP("long message")
 	DUP("")
-	DUP(NULL)
-	printf("-done\n");*/
+	DUP((char *)NULL)
+	printf("-done\n");
 
 	return (0);
 }

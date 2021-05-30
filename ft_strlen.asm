@@ -2,7 +2,7 @@ section .text
     global _ft_strlen
 
 _ft_strlen:
-    xor rax, rax ; i = 0
+    xor rax, rax
     jmp loop
 
 increment:

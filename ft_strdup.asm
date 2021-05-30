@@ -2,33 +2,33 @@ section	.text
     global  _ft_strdup
     extern  _malloc
 
-_ft_strdup:							; rdi = src
+_ft_strdup:
 	cmp	    rdi, 0
-	jz	    error					; src is NULL
+	jz	    error
 
 len_start:
-	xor		rcx, rcx				; i = 0
+	xor		rcx, rcx
 	jmp		len_compare
 
 len_increment:
-	inc		rcx						; i++
+	inc		rcx
 
 len_compare:
-	cmp		BYTE [rdi + rcx], 0		; str[i] == 0
+	cmp		BYTE [rdi + rcx], 0
 	jne		len_increment
 
 malloc_start:
-	inc		rcx						; length++
-	push	rdi						; save src
+	inc		rcx
+	push	rdi
 	mov		rdi, rcx
-	call	_malloc					; rax = _malloc(length)
-	pop		rdi						; restore src
+	call	_malloc
+	pop		rdi
 	cmp		rax, 0
-	jz		error					; malloc return NULL
+	jz		error
 
 copy_start:
-	xor		rcx, rcx				; i = 0
-	xor		rdx, rdx				; tmp = 0
+	xor		rcx, rcx
+	xor		rdx, rdx
 	jmp		copy_copy
 
 copy_increment:

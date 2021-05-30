@@ -1,7 +1,7 @@
 section .text
     global _ft_strcmp
 
-_ft_strcmp:									; s1 = rdi, s2 = rsi
+_ft_strcmp:
     xor	rcx, rcx
     xor	rdx, rdx
     cmp	rdi, 0

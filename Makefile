@@ -11,12 +11,12 @@
 # **************************************************************************** #
 
 SRCS		=	$(addprefix ft_, $(addsuffix .asm,\
-				strlen strcpy strcmp write read))
+				strlen strcpy strcmp write read strdup))
 OBJS		=	$(SRCS:.asm=.o)
 
-SRCS_BONUS	=	$(addprefix ft_, $(addsuffix _bonus.asm,\
+BONUS_SRCS	=	$(addprefix ft_, $(addsuffix _bonus.asm,\
 				atoi_base list_push_front list_size list_sort list_remove_if))
-OBJS_BONUS	=	$(SRCS_BONUS:.asm=.o)
+BONUS_OBJS	=	$(BONUS_SRCS:.asm=.o)
 
 NA			=	nasm
 NA_FLAGS	=	-f macho64
@@ -33,10 +33,10 @@ $(NAME):		$(OBJS)
 				ar rcs $(NAME) $(OBJS)
 
 clean:
-				rm -rf $(OBJS)
+				rm -rf $(OBJS) $(BONUS_OBJS)
 
 fclean:			clean
-				rm -rf $(NAME) $(TEST)
+				rm -rf $(NAME) $(BONUS) $(TEST) $(TEST_BONUS)
 
 re:				fclean $(NAME)
 
@@ -44,4 +44,11 @@ test:			$(NAME)
 				gcc $(FLAGS) -L. -lasm -o $(TEST) main.c
 				./$(TEST) < Makefile
 
-.PHONY:			clean fclean re test
+bonus:			$(OBJS) $(BONUS_OBJS)
+				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
+
+test_bonus:		bonus
+				gcc $(FLAGS) -L. -lasm -o $(TEST_BONUS) main_bonus.c
+				./$(TEST_BONUS)
+
+.PHONY:			clean fclean re test bonus test_bonus
