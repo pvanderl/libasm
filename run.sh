@@ -1,3 +1,4 @@
 nasm -f elf main.asm
-gcc main.o -o main
+ld -m elf_i386 -s -o main main.o
 ./main
+

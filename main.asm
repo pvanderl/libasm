@@ -1,7 +1,7 @@
 segment .text
-    global main
+    global _start
 
-main:
+_start:
     mov edx,11
     mov ecx,text
     mov ebx,1
