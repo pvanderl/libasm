@@ -23,6 +23,7 @@ NA_FLAGS	=	-f macho64
 FLAGS		=	-Wall -Wextra -Werror
 NAME		=	libasm.a
 TEST		=	test
+BONUS_TEST	=	test_bonus
 
 %.o:			%.asm
 				$(NA) $(NA_FLAGS) $<
@@ -48,7 +49,7 @@ bonus:			$(OBJS) $(BONUS_OBJS)
 				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
 test_bonus:		bonus
-				gcc $(FLAGS) -L. -lasm -o $(TEST_BONUS) main_bonus.c
-				./$(TEST_BONUS)
+				gcc $(FLAGS) -L. -lasm -o $(BONUS_TEST) main_bonus.c
+				./$(BONUS_TEST)
 
 .PHONY:			clean fclean re test bonus test_bonus
