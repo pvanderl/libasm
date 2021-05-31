@@ -49,7 +49,7 @@ bonus:			$(OBJS) $(BONUS_OBJS)
 				ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
 test_bonus:		bonus
-				gcc $(FLAGS) -L. -lasm -o $(BONUS_TEST) main_bonus.c
+				gcc $(FLAGS) -L. -lasm -o $(BONUS_TEST) main_bonus.c mains_bonus.c mains_bonus.c main_utils_bonus.c
 				./$(BONUS_TEST)
 
 .PHONY:			clean fclean re test bonus test_bonus
