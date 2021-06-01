@@ -10,13 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=	$(addprefix ft_, $(addsuffix .asm,\
+SRCS		=	$(addprefix ft_, $(addsuffix .s,\
 				strlen strcpy strcmp write read strdup))
-OBJS		=	$(SRCS:.asm=.o)
+OBJS		=	$(SRCS:.s=.o)
 
-BONUS_SRCS	=	$(addprefix ft_, $(addsuffix _bonus.asm,\
+BONUS_SRCS	=	$(addprefix ft_, $(addsuffix _bonus.s,\
 				atoi_base list_push_front list_size list_sort list_remove_if))
-BONUS_OBJS	=	$(BONUS_SRCS:.asm=.o)
+BONUS_OBJS	=	$(BONUS_SRCS:.s=.o)
 
 NA			=	nasm
 NA_FLAGS	=	-f macho64
@@ -25,7 +25,7 @@ NAME		=	libasm.a
 TEST		=	test
 BONUS_TEST	=	test_bonus
 
-%.o:			%.asm
+%.o:			%.s
 				$(NA) $(NA_FLAGS) $<
 
 all:			$(NAME)
