@@ -10,146 +10,89 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
+#include "main.h"
 
-/*
-** Useful macros
-*/
-# define DUP(s)				tmp = ft_strdup(s); printf("`%s` (`%s`)\n", tmp, s); free(tmp); tmp = NULL;
-
-/*
-** Function prototypes
-*/
-int		ft_strlen(char const *str);
-
-int		ft_strcmp(char const *s1, char const *s2);
-
-char	*ft_strcpy(char *dst, char const *src);
-
-ssize_t	ft_write(int fd, void const *buf, size_t nbyte);
-
-ssize_t	ft_read(int fd, void *buf, size_t nbyte);
-
-char	*ft_strdup(char const *s1);
-
-/*
-** Start !
-*/
-int		main(void)
+static void 	len_cpy_cmp_read_write_dup(
+		char *s1, char *s2, int is_strlen, int len)
 {
-	int		i;
-	int     size;
-	long	r;
 	char	buffer[100];
-	char	*tmp;
-	char	*a;
-	char	*b;
- 	char	*tmp2;
 
-	r = 0;
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
+	bzero(buffer, 100);
+	if (is_strlen == 1)
+		printf("\t`%s` = %d (%d)\n", s1, ft_strlen(s1), (int)strlen(s1));
+	else if (is_strlen == 0)
+		printf("\t`%s` (%s)\n", ft_strcpy(buffer, s1), s1);
+	else if (is_strlen == 2)
+	{
+		if (!s1 || !s2)
+			printf("\t`%s`:`%s` = %d\n", s1, s2, ft_strcmp(s1, s2));
+		else
+			printf("\t`%s`:`%s` = %d (%d)\n", s1, s2, ft_strcmp(s1, s2),
+				strcmp(s1, s2));
+	}
+	else if (is_strlen == 3)
+		printf("\t %zd (`%s`:%d)\n", ft_write(FOUT, s2, len), s2, len);
+	else if (is_strlen == 4)
+		printf("\t`%s`:%zd\n", buffer, ft_read(FIN, buffer, len));
+	else
+	{
+		s2 = ft_strdup(s1);
+		printf("`%s` (`%s`)\n", s2, s1);
+		free(s2);
+	}
+}
 
-	printf("strlen\n");
-	tmp = "";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
-	tmp = "toto";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
-	tmp = "HEHEHEHE";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
-	tmp = "J'aime 19! c'est une ecole de fous!";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
-	tmp = "Ils sont fous ces codeurs";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
-	tmp = "-1";
-	printf("\t`%s` = %d (%d)\n", tmp, ft_strlen(tmp), (int)strlen(tmp));
+static void	main_0(void)
+{
 	printf("OK\n");
-
-	printf("\nstrcpy\n");
-	printf("\t`%s` (`toto`)\n", ft_strcpy(buffer, "toto"));
-	printf("\t`%s` (empty)\n", ft_strcpy(buffer, ""));
-	printf("\t`%s` (`long message`)\n", ft_strcpy(buffer, "long message"));
-	printf("\t`%s` (NULL)\n", ft_strcpy(buffer, NULL));
-	printf("OK\n");
-
-
-	printf("\nstrcmp\n");
-	a = "toto";
-	b = "toto";
-	printf("\t`%s`:`%s` = %d (%d)\n", a, b, ft_strcmp(a, b), strcmp(a, b));
-	a = "";
-	b = "toto";
-	printf("\t`%s`:`%s` = %d (%d)\n", a, b, ft_strcmp(a, b), strcmp(a, b));
-	a = "toto";
-	b = "";
-	printf("\t`%s`:`%s` = %d (%d)\n", a, b, ft_strcmp(a, b), strcmp(a, b));
-	a = "toto";
-	b = "toto Hey";
-	printf("\t`%s`:`%s` = %d (%d)\n", a, b, ft_strcmp(a, b), strcmp(a, b));
-	printf("\t`%s`:`%s` = %d\n", "TOTO", (char *)NULL, ft_strcmp("TOTO", NULL));
-	printf("\t`%s`:`%s` = %d\n", (char *)NULL, "TOTO", ft_strcmp(NULL, "TOTO"));
-	printf("\t`%s`:`%s` = %d\n", (char *)NULL, (char *)NULL, ft_strcmp(NULL, NULL));
-	printf("OK\n");
-
-
 	printf("\nwrite\n");
-	tmp = "toto";
-	size = 4;
-	printf("\t %zd (`%s`:%d)\n", ft_write(STDOUT_FILENO, tmp, size), tmp, size);
-	tmp = "totototo";
-	size = 4;
-	printf("\t %zd (`%s`:%d)\n", ft_write(STDOUT_FILENO, tmp, size), tmp, size);
-	tmp = "totototo";
-	size = 8;
-	printf("\t %zd (`%s`:%d)\n", ft_write(STDOUT_FILENO, tmp, size), tmp, size);
-	tmp = "toto";
-	size = 2;
-	printf("\t %zd (`%s`:%d)\n", ft_write(STDOUT_FILENO, tmp, size), tmp, size);
+	len_cpy_cmp_read_write_dup(NULL, "toto", 3, 4);
+	len_cpy_cmp_read_write_dup(NULL, "totototo", 3, 4);
+	len_cpy_cmp_read_write_dup(NULL, "totototo", 3, 8);
+	len_cpy_cmp_read_write_dup(NULL, "toto", 3, 2);
 	printf("OK\n");
-
 	printf("\nread (Makefile)\n");
-	i = ft_read(STDIN_FILENO, buffer, 50);
-	printf("\t`%s`:%d\n", buffer, i);
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
-	i = ft_read(STDIN_FILENO, buffer, 25);
-	printf("\t`%s`:%d\n", buffer, i);
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
-	i = ft_read(STDIN_FILENO, buffer, 4);
-	printf("\t`%s`:%d\n", buffer, i);
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
-	i = ft_read(STDIN_FILENO, buffer, 26);
-	printf("\t`%s`:%d\n", buffer, i);
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
-	i = ft_read(STDIN_FILENO, buffer, 14);
-	printf("\t`%s`:%d\n", buffer, i);
-	i = 0;
-	while (i < 100)
-		buffer[i++] = 0;
-	i = ft_read(STDIN_FILENO, buffer, 0);
-	printf("\t`%s`:%d\n", buffer, i);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 4, 50);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 4, 25);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 4, 4);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 4, 14);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 4, 0);
 	printf("OK\n");
-
-	printf("\n--ft_strdup\n");
-	tmp2 = ft_strdup("toto");
-	DUP(tmp2)
-	free(tmp2);
-	DUP("totobar")
-	DUP("long message")
-	DUP("")
-	DUP((char *)NULL)
+	printf("\nft_strdup\n");
+	len_cpy_cmp_read_write_dup("toto", NULL, 5, 0);
+	len_cpy_cmp_read_write_dup("totobar", NULL, 5, 0);
+	len_cpy_cmp_read_write_dup("long message", NULL, 5, 0);
+	len_cpy_cmp_read_write_dup("", NULL, 5, 0);
+	len_cpy_cmp_read_write_dup((char *) NULL, NULL, 5, 0);
+	len_cpy_cmp_read_write_dup("long message", NULL, 5, 0);
 	printf("-done\n");
+}
 
+int	main(void)
+{
+	printf("strlen\n");
+	len_cpy_cmp_read_write_dup("", NULL, 1, 0);
+	len_cpy_cmp_read_write_dup("toto", NULL, 1, 0);
+	len_cpy_cmp_read_write_dup("HEHEHEHE", NULL, 1, 0);
+	len_cpy_cmp_read_write_dup("J'aime 19! c'est une ecole de fous!",
+		NULL, 1, 0);
+	len_cpy_cmp_read_write_dup("Ils sont fous ces codeurs", NULL, 1, 0);
+	len_cpy_cmp_read_write_dup("-1", NULL, 1, 0);
+	printf("OK\n");
+	printf("\nstrcpy\n");
+	len_cpy_cmp_read_write_dup("toto", NULL, 0, 0);
+	len_cpy_cmp_read_write_dup("", NULL, 0, 0);
+	len_cpy_cmp_read_write_dup("long message", NULL, 0, 0);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 0, 0);
+	printf("OK\n");
+	printf("\nstrcmp\n");
+	len_cpy_cmp_read_write_dup("toto", "toto", 2, 0);
+	len_cpy_cmp_read_write_dup("", "toto", 2, 0);
+	len_cpy_cmp_read_write_dup("toto", "", 2, 0);
+	len_cpy_cmp_read_write_dup("toto", "toto Hey", 2, 0);
+	len_cpy_cmp_read_write_dup("TOTO", NULL, 2, 0);
+	len_cpy_cmp_read_write_dup(NULL, "TOTO", 2, 0);
+	len_cpy_cmp_read_write_dup(NULL, NULL, 2, 0);
+	main_0();
 	return (0);
 }

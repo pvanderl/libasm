@@ -12,7 +12,7 @@
 
 #include "main_bonus.h"
 
-static void	main_4(t_list list, t_list *push_test)
+static void	main_4(t_list *push_test)
 {
 	printf("before:\n");
 	printf_list(push_test);
@@ -26,7 +26,7 @@ static void	main_4(t_list list, t_list *push_test)
 	printf("-done\n");
 }
 
-static void	main_3(t_list list, t_list *push_test)
+static void	main_3(t_list *push_test)
 {
 	printf("nothing removed:\n");
 	printf_list(push_test);
@@ -39,7 +39,6 @@ static void	main_3(t_list list, t_list *push_test)
 	printf_list(push_test);
 	ft_lstclear(&push_test);
 	printf("-done\n");
-	*push_test = &list;
 	printf("\n--ft_list_sort\n");
 	ft_list_push_front(&push_test, strdup("zwxy"));
 	ft_list_push_front(&push_test, strdup("toto"));
@@ -52,11 +51,10 @@ static void	main_3(t_list list, t_list *push_test)
 	ft_list_push_front(&push_test, strdup("0547"));
 	ft_list_push_front(&push_test, strdup("000"));
 	ft_list_push_front(&push_test, strdup("zzz"));
-	main_4(list, push_test);
+	main_4(push_test);
 }
 
-static void	main_2(
-		t_list list, t_list list_next, t_list list_last, t_list *push_test)
+static void	main_2(t_list *push_test)
 {
 	free(push_test);
 	push_test = NULL;
@@ -75,17 +73,17 @@ static void	main_2(
 	printf("-done\n");
 	printf("\n--ft_list_remove_if\n");
 	ft_list_push_front(&push_test, strdup("toto"));
-	*push_test = &list;
 	ft_list_push_front(&push_test, strdup("barbar"));
 	ft_list_push_front(&push_test, strdup("tortor"));
 	ft_list_push_front(&push_test, NULL);
 	printf("before:\n");
 	printf_list(push_test);
 	ft_list_remove_if(&push_test, "", &strcmp, &free);
-	main_3(list, push_test);
+	main_3(push_test);
 }
 
-static void	main_1(t_list list, t_list list_next, t_list list_last)
+static void	main_1(
+		t_list list, t_list list_next, t_list list_last, t_list *push_test)
 {
 	printf("\n--ft_list_size\n");
 	printf("list content:\n");
@@ -97,21 +95,15 @@ static void	main_1(t_list list, t_list list_next, t_list list_last)
 	printf("-done\n");
 	free(list_next.data);
 	free(list_last.data);
-	*push_test = &list;
-	list.data = strdup("toto");
-	list.next = &list_next;
-	list_next.data = strdup("bar");
-	list_next.next = &list_last;
-	list_last.data = strdup("monkaS");
-	list_last.next = NULL;
 	printf("\n--ft_list_push_front\n");
+	push_test = &list;
 	ft_list_push_front(&push_test, strdup("toto"));
 	printf("added: `%s` (next: %p)\n",
 		   (char *)(push_test->data), push_test->next);
 	printf("new list size: %d (%d)\n", ft_list_size(push_test), 4);
 	free(list.data);
 	free(push_test->data);
-	main_2();
+	main_2(push_test);
 }
 
 void	main_0(void)
@@ -138,5 +130,5 @@ void	main_0(void)
 	list_next.next = &list_last;
 	list_last.data = strdup("monkaS");
 	list_last.next = NULL;
-	main_1(list, list_next, list_last);
+	main_1(list, list_next, list_last, &list);
 }
